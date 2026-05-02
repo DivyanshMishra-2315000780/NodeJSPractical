@@ -6,6 +6,7 @@ const PORT = 3000;
 
 const server = http.createServer((req, res) => {
 
+    // 1. /updateUser → add timestamp
     if (req.url === "/updateUser" && req.method === "GET") {
         const data = `Visited at ${new Date().toISOString()}\n`;
 
@@ -16,6 +17,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // 2. /saveLog → read file
     else if (req.url === "/saveLog" && req.method === "GET") {
         fs.readFile("visitors.log", "utf8", (err, data) => {
             if (err) return res.end("No data found");
@@ -24,6 +26,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // 3. /backup → copy file
     else if (req.url === "/backup" && req.method === "POST") {
         fs.copyFile("visitors.log", "backup.log", (err) => {
             if (err) return res.end("Error in backup");
@@ -32,6 +35,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // 4. /clearLog → clear file
     else if (req.url === "/clearLog" && req.method === "GET") {
         fs.writeFile("visitors.log", "", (err) => {
             if (err) return res.end("Error clearing file");
@@ -40,6 +44,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
+    // 5. /serverInfo → system info
     else if (req.url === "/serverInfo" && req.method === "GET") {
         const info = {
             platform: os.platform(),
